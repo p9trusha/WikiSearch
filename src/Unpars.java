@@ -1,9 +1,9 @@
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+
 public class Unpars {
-    public static Query main(String[] args, String inputline) throws IOException {
+    public static Query main(String inputline) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

@@ -13,8 +13,7 @@ class ConsoleInput {
 
     String getSearchRequest() {
         System.out.print("Введите поисковой запрос: ");
-        String wikiRequest = this.sc.nextLine();
-        return wikiRequest;
+        return this.sc.nextLine();
     }
 
     int getPageId(Query pages) {
@@ -26,7 +25,7 @@ class ConsoleInput {
             System.out.println("Выбирите номер страницы");
             indexOfTitle = this.sc.nextInt() - 1;
         } while (indexOfTitle >= pages.pageid.size());
-        return Integer.valueOf(pages.pageid.get(indexOfTitle));
+        return Integer.parseInt(pages.pageid.get(indexOfTitle));
     }
 
     void close() {

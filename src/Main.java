@@ -1,4 +1,7 @@
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +19,7 @@ class ConsoleInput {
 
     int getPageId(Query pages) {
         for (int i = 0; i < pages.title.size(); i++) {
-            System.out.println(String.format("%d: %s", i + 1, pages.title.get(i)));
+            System.out.printf("%d: %s\n", i + 1, pages.title.get(i));
         }
         int indexOfTitle;
         do {
@@ -46,6 +49,19 @@ class WikiApi {
     }
 }
 
+class OpenInBrowser {
+    void wikipedia(int pageId) {
+        String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%d", pageId);
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
         ConsoleInput cip = new ConsoleInput();
@@ -54,15 +70,17 @@ public class Main {
         WikiApi wAPI = new WikiApi();
         String jsonContent = wAPI.getJson(searchRequest);
 
-        Unpars unpars = new Unpars();
         Query pages;
         try {
-            pages = unpars.main(jsonContent);
+            pages = Unpars.main(jsonContent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         int pageId = cip.getPageId(pages);
         cip.close();
+
+        OpenInBrowser oib = new OpenInBrowser();
+        oib.wikipedia(pageId);
     }
 }

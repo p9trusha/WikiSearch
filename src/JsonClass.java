@@ -1,12 +1,14 @@
-import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
-
+//Создаем наш класс
 class Query {
-    public List<String> title  = new java.util.ArrayList<>(List.of());;
-    public List<String> pageid = new java.util.ArrayList<>(List.of());;
-}
+    public void getTitle(String string) {
+        title.add(string);
+    }
 
-class JsonClass {
-    @JsonSetter("query")
-    Object query;
+    public void getPageid(String string) {
+        pageid.add(string);
+    }
+
+    final List<String> title  = new java.util.ArrayList<>(List.of());
+    final List<String> pageid = new java.util.ArrayList<>(List.of());
 }

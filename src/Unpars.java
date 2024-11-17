@@ -3,7 +3,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class Unpars {
-    public static Query unpars(String inputline)  {
+    public static Query unpars(String stringJson)  {
         //теги которые нам нужны
         String TagQuery = "query";
         String TagSearch = "search";
@@ -12,7 +12,7 @@ public class Unpars {
 
         try {
             //Создаем jsonObject в который добавляем считаный json архив
-            JsonObject jsonObject = (JsonObject) JsonParser.parseString(inputline);
+            JsonObject jsonObject = (JsonObject) JsonParser.parseString(stringJson);
             //Создаем queryObject в который добавляем обьект query из архива
             JsonObject queryObject = (JsonObject) jsonObject.get(TagQuery);
             //Создаем searchArray в который добавляем список из обьекта query

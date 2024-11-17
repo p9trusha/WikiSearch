@@ -20,25 +20,29 @@ public class Unpars {
             //Создаем searchArray в который добавляем список из обьекта query
             JsonArray searchArray = (JsonArray) queryObject.get(TagSearch);
             //Создаем класс
-            Query query = new Query();
-            //перебираем обьекты внутри списка
-            for (Object item: searchArray) {
-                //создаем буфферный обьект
-                JsonObject searchObject = (JsonObject) item;
-                //из буфера достаем нужные нам данные
-                Object pageTitle = (Object) searchObject.get(TagTitle);
-                Object pageID = (Object) searchObject.get(TagPageID);
-                //добавляем их в класс query
-
-                query.getPageid(pageID.toString());
-                query.getTitle(pageTitle.toString());
-
-            }
             //возвращаем класс
-            return (query);
+            return (getQuery(searchArray, TagTitle, TagPageID));
         } catch (Exception _) {
             return null;
         }
+    }
+
+    private static Query getQuery(JsonArray searchArray, String TagTitle, String TagPageID) {
+        Query query = new Query();
+        //перебираем обьекты внутри списка
+        for (Object item: searchArray) {
+            //создаем буфферный обьект
+            JsonObject searchObject = (JsonObject) item;
+            //из буфера достаем нужные нам данные
+            Object pageTitle = (Object) searchObject.get(TagTitle);
+            Object pageID = (Object) searchObject.get(TagPageID);
+            //добавляем их в класс query
+
+            query.getPageid(pageID.toString());
+            query.getTitle(pageTitle.toString());
+        }
+        //возвращаем класс
+        return query;
     }
 }
 

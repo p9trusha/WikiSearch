@@ -1,6 +1,6 @@
 import java.util.List;
 //Создаем наш класс
-class Query {
+public class Query {
     public void getTitle(String string) {
         title.add(string);
     }

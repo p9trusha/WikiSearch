@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import org.apache.commons.io.IOUtils;
 
+
 class ConsoleInput {
     Scanner sc = new Scanner(System.in);
 
@@ -69,17 +70,15 @@ public class Main {
         WikiApi wAPI = new WikiApi();
         String jsonContent = wAPI.getJson(searchRequest);
 
-        Query pages;
-        try {
-            pages = Unpars.main(jsonContent);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
+        Query pages = Unpars.unpars(jsonContent);
+
+        assert pages != null;
         int pageId = cip.getPageId(pages);
         cip.close();
 
         OpenInBrowser oib = new OpenInBrowser();
         oib.wikipedia(pageId);
+
     }
 }

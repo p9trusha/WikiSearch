@@ -1,31 +1,44 @@
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 public class Unpars {
-    public static Query main(String inputline) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    public static Query unpars(String inputline)  {
+        //теги которые нам нужны
+        String TagQuery = "query";
+        String TagSearch = "search";
+        String TagTitle = "title";
+        String TagPageID = "pageid";
 
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        JsonClass jsonClass = mapper.readValue(inputline, JsonClass.class);
+        try {
+            //Создаем jsonObject в который добавляем считаный json архив
+            JsonObject jsonObject = (JsonObject) JsonParser.parseString(inputline);
+            //Создаем queryObject в который добавляем обьект query из архива
+            JsonObject queryObject = (JsonObject) jsonObject.get(TagQuery);
+            //Создаем searchArray в который добавляем список из обьекта query
+            JsonArray searchArray = (JsonArray) queryObject.get(TagSearch);
+            //Создаем класс
+            Query query = new Query();
+            //перебираем обьекты внутри списка
+            for (Object item: searchArray) {
+                //создаем буфферный обьект
+                JsonObject searchObject = (JsonObject) item;
+                //из буфера достаем нужные нам данные
+                Object pageTitle = (Object) searchObject.get(TagTitle);
+                Object pageID = (Object) searchObject.get(TagPageID);
+                //добавляем их в класс query
 
-        String query = jsonClass.query.toString();
-        Query pages = new Query();
+                query.getPageid(pageID.toString());
+                query.getTitle(pageTitle.toString());
 
-        while (query.indexOf("title") > 0) {
-            int k = query.indexOf("title");
-            query = query.substring(k);
-            int t = query.indexOf("pageid");
-            String title = query.substring(6,t-2);
-            query = query.substring(t);
-            int i = query.indexOf(",");
-            String pageid = query.substring(7, i );
-
-            pages.pageid.add(pageid);
-            pages.title.add(title);
+            }
+            //возвращаем класс
+            return (query);
+        } catch (Exception _) {
+            return null;
         }
-
-        return (pages);
     }
 }
 

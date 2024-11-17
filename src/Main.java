@@ -1,4 +1,3 @@
-
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -9,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Scanner;
 import org.apache.commons.io.IOUtils;
+
+// класс для работы с консолью
 class ConsoleInput {
     Scanner sc = new Scanner(System.in);
 
@@ -34,6 +35,7 @@ class ConsoleInput {
     }
 }
 
+// класс для работы с wiki api
 class WikiApi {
     String getJson(String searchRequest) {
         searchRequest = URLEncoder.encode(searchRequest, StandardCharsets.UTF_8);
@@ -49,6 +51,7 @@ class WikiApi {
     }
 }
 
+// класс для открытия ссылки в браусере
 class OpenInBrowser {
     void wikipedia(String pageId) {
         String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%s", pageId);
@@ -64,12 +67,13 @@ class OpenInBrowser {
 
 public class Main {
     public static void main(String[] args) {
+        // получение запроса пользователя
         ConsoleInput cip = new ConsoleInput();
         String searchRequest = cip.getSearchRequest();
 
+        // получение json
         WikiApi wAPI = new WikiApi();
         String jsonContent = wAPI.getJson(searchRequest);
-
 
         Query pages = Unpars.unpars(jsonContent);
         //Проверяем, есть ли данные в классе

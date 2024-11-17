@@ -1,8 +1,6 @@
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 
 public class Unpars {
     public static Query unpars(String inputline)  {

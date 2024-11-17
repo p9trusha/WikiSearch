@@ -1,3 +1,4 @@
+
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -5,10 +6,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Scanner;
 import org.apache.commons.io.IOUtils;
-
-
 class ConsoleInput {
     Scanner sc = new Scanner(System.in);
 
@@ -17,7 +17,7 @@ class ConsoleInput {
         return this.sc.nextLine();
     }
 
-    int getPageId(Query pages) {
+    String getPageId(Query pages) {
         for (int i = 0; i < pages.title.size(); i++) {
             System.out.printf("%d: %s\n", i + 1, pages.title.get(i));
         }
@@ -26,7 +26,7 @@ class ConsoleInput {
             System.out.println("Выбирите номер страницы");
             indexOfTitle = this.sc.nextInt() - 1;
         } while (indexOfTitle >= pages.pageid.size());
-        return Integer.parseInt(pages.pageid.get(indexOfTitle));
+        return (pages.pageid.get(indexOfTitle));
     }
 
     void close() {
@@ -50,8 +50,8 @@ class WikiApi {
 }
 
 class OpenInBrowser {
-    void wikipedia(int pageId) {
-        String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%d", pageId);
+    void wikipedia(String pageId) {
+        String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%s", pageId);
         try {
             Desktop.getDesktop().browse(new URI(url));
         } catch (IOException e) {
@@ -72,13 +72,18 @@ public class Main {
 
 
         Query pages = Unpars.unpars(jsonContent);
-
-        assert pages != null;
-        int pageId = cip.getPageId(pages);
-        cip.close();
-
-        OpenInBrowser oib = new OpenInBrowser();
-        oib.wikipedia(pageId);
+        //Проверяем, есть ли данные в классе
+        Objects.requireNonNull(pages);
+        if (!pages.pageid.isEmpty()) {
+            //Выбор страницы пользователем
+            String pageId = cip.getPageId(pages);
+            cip.close();
+            //Открытые страницы
+            OpenInBrowser oib = new OpenInBrowser();
+            oib.wikipedia(pageId);
+        } else {
+           System.out.println("Информации не найдено");
+        }
 
     }
 }

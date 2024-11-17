@@ -11,4 +11,5 @@ public class Query {
 
     final List<String> title  = new java.util.ArrayList<>(List.of());
     final List<String> pageid = new java.util.ArrayList<>(List.of());
+
 }

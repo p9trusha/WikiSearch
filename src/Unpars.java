@@ -17,8 +17,9 @@ public class Unpars {
             JsonObject queryObject = (JsonObject) jsonObject.get(TagQuery);
             //Создаем searchArray в который добавляем список из обьекта query
             JsonArray searchArray = (JsonArray) queryObject.get(TagSearch);
-            //Создаем класс
-            //возвращаем класс
+            
+            //getQuery возвращает класс Query
+            //данная фнукция добавляет в Query данные из архива
             return (getQuery(searchArray, TagTitle, TagPageID));
         } catch (Exception _) {
             return null;

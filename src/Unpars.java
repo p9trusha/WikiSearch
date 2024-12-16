@@ -44,4 +44,3 @@ public class Unpars {
         return query;
     }
 }
-

@@ -26,7 +26,7 @@ class ConsoleInput {
         do {
             System.out.println("Выбирите номер страницы");
             indexOfTitle = this.sc.nextInt() - 1;
-        } while (indexOfTitle >= pages.pageid.size());
+        } while (indexOfTitle >= pages.pageid.size() || indexOfTitle < 1);
         return (pages.pageid.get(indexOfTitle));
     }
 
@@ -57,9 +57,7 @@ class OpenInBrowser {
         String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%s", pageId);
         try {
             Desktop.getDesktop().browse(new URI(url));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -88,6 +86,5 @@ public class Main {
         } else {
            System.out.println("Информации не найдено");
         }
-
     }
 }

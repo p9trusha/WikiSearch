@@ -2,7 +2,6 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -24,7 +23,7 @@ class ConsoleInput {
         }
         int indexOfTitle;
         do {
-            System.out.println("Выбирите номер страницы");
+            System.out.println("Выберите номер страницы");
             indexOfTitle = this.sc.nextInt() - 1;
         } while (indexOfTitle >= pages.pageid.size() || indexOfTitle < 1);
         return (pages.pageid.get(indexOfTitle));
@@ -44,14 +43,14 @@ class WikiApi {
                 searchRequest
         );
         try {
-            return IOUtils.toString(new URL(apiLink), StandardCharsets.UTF_8);
-        } catch (IOException e) {
+            return IOUtils.toString(new URI(apiLink).toURL(), StandardCharsets.UTF_8);
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 }
 
-// класс для открытия ссылки в браусере
+// класс для открытия ссылки в браузере
 class OpenInBrowser {
     void wikipedia(String pageId) {
         String url = String.format("https://ru.wikipedia.org/w/index.php?curid=%s", pageId);

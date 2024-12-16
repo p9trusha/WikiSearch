@@ -2,6 +2,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 
 // класс для работы с консолью
 class ConsoleInput {
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     String getSearchRequest() {
         System.out.print("Введите поисковой запрос: ");
@@ -18,15 +19,15 @@ class ConsoleInput {
     }
 
     String getPageId(Query pages) {
-        for (int i = 0; i < pages.title.size(); i++) {
-            System.out.printf("%d: %s\n", i + 1, pages.title.get(i));
+        for (int i = 0; i < pages.titles.size(); i++) {
+            System.out.printf("%d: %s\n", i + 1, pages.titles.get(i));
         }
         int indexOfTitle;
         do {
             System.out.println("Выберите номер страницы");
             indexOfTitle = this.sc.nextInt() - 1;
-        } while (indexOfTitle >= pages.pageid.size() || indexOfTitle < 1);
-        return (pages.pageid.get(indexOfTitle));
+        } while (indexOfTitle >= pages.pageIds.size() || indexOfTitle < 0);
+        return (pages.pageIds.get(indexOfTitle));
     }
 
     void close() {
@@ -43,8 +44,8 @@ class WikiApi {
                 searchRequest
         );
         try {
-            return IOUtils.toString(new URI(apiLink).toURL(), StandardCharsets.UTF_8);
-        } catch (IOException | URISyntaxException e) {
+            return IOUtils.toString(new URL(apiLink), StandardCharsets.UTF_8);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -75,7 +76,7 @@ public class Main {
         Query pages = Unpars.unpars(jsonContent);
         //Проверяем, есть ли данные в классе
         Objects.requireNonNull(pages);
-        if (!pages.pageid.isEmpty()) {
+        if (!pages.pageIds.isEmpty()) {
             //Выбор страницы пользователем
             String pageId = cip.getPageId(pages);
             cip.close();

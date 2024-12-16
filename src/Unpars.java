@@ -11,15 +11,15 @@ public class Unpars {
         String TagPageID = "pageid";
 
         try {
-            //Создаем jsonObject в который добавляем считаный json архив
+            //Создаем jsonObject в который добавляем считанный json архив
             JsonObject jsonObject = (JsonObject) JsonParser.parseString(stringJson);
-            //Создаем queryObject в который добавляем обьект query из архива
+            //Создаем queryObject в который добавляем объект query из архива
             JsonObject queryObject = (JsonObject) jsonObject.get(TagQuery);
-            //Создаем searchArray в который добавляем список из обьекта query
+            //Создаем searchArray в который добавляем список из объекта query
             JsonArray searchArray = (JsonArray) queryObject.get(TagSearch);
             
             //getQuery возвращает класс Query
-            //данная фнукция добавляет в Query данные из архива
+            //данная функция добавляет в Query данные из архива
             return (getQuery(searchArray, TagTitle, TagPageID));
         } catch (Exception _) {
             return null;
@@ -28,17 +28,17 @@ public class Unpars {
 
     private static Query getQuery(JsonArray searchArray, String TagTitle, String TagPageID) {
         Query query = new Query();
-        //перебираем обьекты внутри списка
+        //перебираем объекты внутри списка
         for (Object item: searchArray) {
-            //создаем буфферный обьект
+            //создаем буферный объект
             JsonObject searchObject = (JsonObject) item;
             //из буфера достаем нужные нам данные
-            Object pageTitle = (Object) searchObject.get(TagTitle);
-            Object pageID = (Object) searchObject.get(TagPageID);
+            Object pageTitle = searchObject.get(TagTitle);
+            Object pageID = searchObject.get(TagPageID);
             //добавляем их в класс query
 
-            query.getPageid(pageID.toString());
-            query.getTitle(pageTitle.toString());
+            query.putPageId(pageID.toString());
+            query.putTitle(pageTitle.toString());
         }
         //возвращаем класс
         return query;
